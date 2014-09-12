@@ -50,6 +50,12 @@ VOID RecordMemWrite(VOID * ip, VOID * addr)
     fprintf(trace,"%p: W %p\n", ip, addr);
 }
 
+//To call for instruction accesses.
+VOID RecordInstruction (VOID * ip)
+{
+
+}
+
 // Is called for every instruction and instruments reads and writes
 VOID Instruction(INS ins, VOID *v)
 {
@@ -59,6 +65,10 @@ VOID Instruction(INS ins, VOID *v)
     // On the IA-32 and Intel(R) 64 architectures conditional moves and REP 
     // prefixed instructions appear as predicated instructions in Pin.
     UINT32 memOperands = INS_MemoryOperandCount(ins);
+    INS_InsertPredicatedCall(
+        ins, IPOINT_BEFORE, (AFUNPTR)RecordInstruction,
+        IARG_INST_PTR,
+        IARG_END);
 
     // Iterate over each memory operand of the instruction.
     for (UINT32 memOp = 0; memOp < memOperands; memOp++)

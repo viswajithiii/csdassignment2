@@ -6,6 +6,11 @@ using namespace std;
 
 enum rep_policy {LRU, LFU, RR};
 
+int log_two (int a) {
+    if ( a == 1 ) return 0;
+    else return (1 + log_two(a/2));
+}
+
 class Cache {
 
 private:
@@ -20,9 +25,13 @@ private:
     //derived parameters
     int total_capacity; //number of slots the cache has
     int n_sets; //number of sets
+    int offset_width;
+    int set_width;
 
     //stats
     int total_accesses;
+    int hits;
+    int misses;
     
     //the stored addresses
     uint64_t **addresses;
@@ -31,6 +40,12 @@ private:
 
 
 public:
+
+    Cache() {
+        total_accesses = 0;
+        hits = 0;
+        misses = 0;
+    }
 
     void setFields ( int i_size, int i_assoc, int i_bsize, int i_hl, rep_policy i_policy ) {
         size = i_size;
@@ -42,6 +57,8 @@ public:
         //Derive parameters
         total_capacity = 1024*size/block_size;
         n_sets = total_capacity/assoc;
+        offset_width = log_two(block_size);
+        set_width = log_two(n_sets);
 
         addresses = new uint64_t*[n_sets];
         dirty = new bool*[n_sets];
@@ -55,6 +72,21 @@ public:
 
     void printFields() {
         cout<<"Size: "<<size<<"\nAssociativity: "<<assoc<<"\nBlock_size: "<<block_size<<"\nHit_Latency: "<<hit_latency<<"\nRep_Policy: "<<policy<<"\nTotal capacity: "<<total_capacity<<"\nNumber of sets: "<<n_sets<<endl;
+    }
+
+    void addAccess () {
+        total_accesses++;
+    }
+
+    void addHit () {
+        hits++;
+    }
+
+    void addMiss() {
+        misses++;
+    }
+
+    bool containsAddress( uint64_t addr ) {
 
     }
 
@@ -64,7 +96,16 @@ public:
 //Globals here.
 int N_LEVELS;
 int MAINMEM_HL;
+int main_mem_accesses = 0;
 Cache* caches;
+
+void mem_read (uint64_t addr) {
+
+}
+
+void mem_write (uint64_t addr) {
+
+}
 
 
 //Reads the config file and creates corresponding Caches.

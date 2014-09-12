@@ -1,6 +1,7 @@
 #include<iostream>
 #include<fstream>
 #include<cstring>
+#include<stdint.h>
 using namespace std;
 
 enum rep_policy {LRU, LFU, RR};
@@ -11,13 +12,22 @@ private:
 
     //parameters
     int size; //in KB
-    int assoc;
+    int assoc; //number of slots per set
     int block_size; //in bytes
     int hit_latency;
     rep_policy policy;
 
+    //derived parameters
+    int total_capacity; //number of slots the cache has
+    int n_sets; //number of sets
+
     //stats
     int total_accesses;
+    
+    //the stored addresses
+    uint64_t **addresses;
+    bool **dirty;
+    bool **valid;
 
 
 public:
@@ -28,9 +38,23 @@ public:
         block_size = i_bsize;
         hit_latency = i_hl;
         policy = i_policy;
+
+        //Derive parameters
+        total_capacity = 1024*size/block_size;
+        n_sets = total_capacity/assoc;
+
+        addresses = new uint64_t*[n_sets];
+        dirty = new bool*[n_sets];
+        valid = new bool*[n_sets];
+        for ( int i = 0 ; i < n_sets ; i++ ) {
+            addresses[i] = new uint64_t[assoc];
+            dirty[i] = new bool[assoc];
+            valid[i] = new bool[assoc];
+        }
     }
+
     void printFields() {
-        cout<<"Size: "<<size<<"\nAssociativity: "<<assoc<<"\nBlock_size: "<<block_size<<"\nHit_Latency: "<<hit_latency<<"\nRep_Policy: "<<policy<<endl;
+        cout<<"Size: "<<size<<"\nAssociativity: "<<assoc<<"\nBlock_size: "<<block_size<<"\nHit_Latency: "<<hit_latency<<"\nRep_Policy: "<<policy<<"\nTotal capacity: "<<total_capacity<<"\nNumber of sets: "<<n_sets<<endl;
 
     }
 

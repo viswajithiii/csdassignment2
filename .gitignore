@@ -1,1 +1,10 @@
 *.out
+*~
+*.log
+makefile*
+source/*
+extras/*
+ia32/*
+intel64/*
+obj-intel64/*
+Config/*

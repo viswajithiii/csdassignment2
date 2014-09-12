@@ -34,6 +34,7 @@ END_LEGAL */
 
 #include <stdio.h>
 #include "pin.H"
+#include "CacheSimulator.cpp"
 
 
 FILE * trace;
@@ -42,18 +43,20 @@ FILE * trace;
 VOID RecordMemRead(VOID * ip, VOID * addr)
 {
     fprintf(trace,"%p: R %p\n", ip, addr);
+//    mem_read((uint64_t)addr,0);
 }
 
 // Print a memory write record
 VOID RecordMemWrite(VOID * ip, VOID * addr)
 {
     fprintf(trace,"%p: W %p\n", ip, addr);
+ //   mem_write((uint64_t)addr,0);
 }
 
 //To call for instruction accesses.
 VOID RecordInstruction (VOID * ip)
 {
-
+//    mem_read((uint64_t)ip,0);
 }
 
 // Is called for every instruction and instruments reads and writes
@@ -121,6 +124,7 @@ int main(int argc, char *argv[])
     if (PIN_Init(argc, argv)) return Usage();
 
     trace = fopen("pinatrace.out", "w");
+    //read_inputs();
 
     INS_AddInstrumentFunction(Instruction, 0);
     PIN_AddFiniFunction(Fini, 0);

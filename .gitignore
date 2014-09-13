@@ -1,6 +1,7 @@
 *.out
 *~
 *.log
+matmult
 makefile*
 source/*
 extras/*

@@ -1,14 +1,10 @@
-#include <iostream>
+//#include <iostream>
 #include <stdlib.h>
 #include <time.h>
 
-using namespace std;
-
 int main(int argc, char** argv) {
-    if(argc<2) {
-        cout<<"Usage: "<<argv[0]<<" <matrix dimension>"<<endl;
-        exit(-1);
-    }
+    // Removed argv checks. (This can add unnecessary reads and writes)
+    // Static init throws segfault (contiguous mem issues).
     int n = atoi(argv[1]);
 
     int** A = new int*[n];
@@ -27,36 +23,37 @@ int main(int argc, char** argv) {
             B[i][j] = rand() % 100;
         }
     }
-    for(int i=0;i<n;i++){
-        for(int j=0;j<n;j++){
+    for(int i=0;i<n;i++) {
+        for(int j=0;j<n;j++) {
             C[i][j]=0;
-            for(int k=0;k<n;k++){
+            for(int k=0;k<n;k++) {
                 C[i][j] += (A[i][k] * B[k][j]);
             }
         }
     }
 
-    cout<<"A:"<<endl;
+    // Not printing because that adds unnecessary reads and writes.
+    /*std::cout<<"A:"<<std::endl;
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
-            cout<<A[i][j]<<" ";
+            std::cout<<A[i][j]<<" ";
         }
-        cout<<endl;
+        std::cout<<std::endl;
     }
-    cout<<"B:"<<endl;
+    std::cout<<"B:"<<std::endl;
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
-            cout<<B[i][j]<<" ";
+            std::cout<<B[i][j]<<" ";
         }
-        cout<<endl;
+        std::cout<<std::endl;
     }
-    cout<<"C:"<<endl;
+    std::cout<<"C:"<<std::endl;
     for(int i=0; i<n; i++) {
         for(int j=0; j<n; j++) {
-            cout<<C[i][j]<<" ";
+            std::cout<<C[i][j]<<" ";
         }
-        cout<<endl;
-    }
+        std::cout<<std::endl;
+    }*/
 
     return 0;
 }

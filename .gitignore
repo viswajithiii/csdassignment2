@@ -1,6 +1,8 @@
 *.out
 *~
 *.log
+*.swp
+*.swo
 matmult
 makefile*
 source/*

@@ -1,0 +1,2 @@
+The Makefile assumes that the extras/, ia32/, intel64/ and source/ directories are present in the same directory as the makefile and the cpp sources. These directories are obtained from the Pin Tool tarball.
+The .so file is made using the command make obj-intel64/cachetrace.so for a 64-bit processor, resulting in the .so file being generated inside a newly created obj-intel64 directory at the same directory level. The command is similar for a 32-bit based processor.

@@ -23,7 +23,7 @@ for policy in ['LRU', 'LFU', 'RR']:
     main_mem_data = []
     for order in [2 **x for x in range(3,11)]:
         temp = [str(order), ' & ']
-        filename = 'cachetrace_'+policy+'_'+str(order)+'.out'
+        filename = 'outputs/cachetrace_'+policy+'_'+str(order)+'.out'
         hits = []
         ratio = []
         accesses = []

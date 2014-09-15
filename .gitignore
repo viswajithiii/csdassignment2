@@ -11,3 +11,4 @@ ia32/*
 intel64/*
 obj-intel64/*
 Config/*
+pin*
